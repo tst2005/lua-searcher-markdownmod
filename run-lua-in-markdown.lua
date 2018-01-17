@@ -12,22 +12,25 @@ end
 
 local whatis = {
 	["```lua"]="(",
-	["```lua\r"]="(",
 	["```"]=")",
-	["```\r"]=")",
 }
 local function getluacode(data)
 	local what
 	local opened = false
 	local r = {}
-	for line, nl in data:gmatch("([^\n]*)(\n)") do
+	local function clean(x)
+		return x:gsub("\r$","")
+	end
+	local line
+	for rawline, nl in data:gmatch("([^\n]*)(\n)") do
+		line = clean(rawline)
 		what = whatis[line]
 		if not opened and what == "(" then
 			opened=true
 		elseif opened and what == ")" then
 			opened=false
 		elseif opened then
-			table.insert(r, line..(nl or ""))
+			table.insert(r, rawline..(nl or ""))
 		end
 	end
 	return table.concat(r,"")

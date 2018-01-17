@@ -19,7 +19,7 @@ return 123
 
 Et a l'execution ca donne :
 ```bash
-$ ./sample.md                                                                                                                                  
+$ ./run-lua-in-markdown.lua ./sample.md                                                                                                                                  
 OK
 =>
 

@@ -1,4 +1,3 @@
-#!./run-lua-in-markdown.lua
 
 ce texte sera ignoré
 
