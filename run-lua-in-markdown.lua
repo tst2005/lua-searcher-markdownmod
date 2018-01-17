@@ -37,7 +37,7 @@ local data = fd:read("*a")
 local pre = [[if type(...)=="string" then pcall(require, (...).."-pre") end;]] -- README.md => README-pre.lua
 local luacode = pre..getluacode(data)
 
-local fakemodname = (arg[1]):gsub("%.[^%.]+$", "")
+local fakemodname = (arg[1]):gsub("%.[^%.]+$", ""):gsub("/%./", "/"):gsub("^%./",""):gsub("/",".")
 local fakefilename = nil
 
 arg={[0]=arg[1], select(2, ...)} -- little hack
