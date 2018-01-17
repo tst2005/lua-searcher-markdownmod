@@ -17,6 +17,17 @@ end
 return 123
 ```
 
+Et a l'execution ca donne :
+```bash
+$ ./sample.md                                                                                                                                  
+OK
+=>
+
+$ ./run-lua-in-markdown.lua README.md                                                                                                       
+hello world!
+=> (number) 123
+```
+
 # TODO
 
 - [x] un searcher qui prend le markdown et vire tout ce qui nest pas dans les balises de code.
