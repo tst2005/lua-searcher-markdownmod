@@ -27,24 +27,31 @@ local function getluacode(data)
 		what = whatis[line]
 		if not opened and what == "(" then
 			opened=true
+			table.insert(r, "\n")
 		elseif opened and what == ")" then
 			opened=false
+			table.insert(r, "\n")
 		elseif opened then
 			table.insert(r, rawline..(nl or ""))
+		else
+			if rawline:find("^#") then -- a title
+				table.insert(r, 'print("'..(line:gsub('(["\\])','\\%1'))..'")'..(nl or ""))
+			else
+				table.insert(r, "\n") -- add empty line for debug facility (get the good line number in case of error)
+			end
 		end
 	end
 	return table.concat(r,"")
 end
 
 local data = fd:read("*a")
-local pre = [[if type(...)=="string" then pcall(require, (...).."-pre") end;]] -- README.md => README-pre.lua
+local pre = [[if type((...) or nil)=="string" then pcall(require, (...or"").."-pre") end;]] -- README.md => README-pre.lua
 local luacode = pre..getluacode(data)
 
 local fakemodname = (arg[1]):gsub("%.[^%.]+$", ""):gsub("/%./", "/"):gsub("^%./",""):gsub("/",".")
 local fakefilename = nil
 
 arg={[0]=arg[1], select(2, ...)} -- little hack
-
 local r = assert( load(luacode) )(fakemodname, fakefilename)
 if r==nil then
 	print("=>")
